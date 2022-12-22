@@ -69,4 +69,22 @@ class MemoryGame {
     }
     return false;
   }
+
+  pickingCards(pickedCard) {
+    // [a, b].length === 2
+    if (this.pickedCards.length == 2) {
+      this.pickedCards = [];
+    }
+
+    this.pickedCards.push(pickedCard);
+
+    // const updatedArray = this.cards.map((card) => {
+    //   if (card.name === pickedCard) {
+    //     card["isOpen"] = true;
+    //   }
+    //   return card;
+    // });
+
+    // this.cards = updatedArray;
+  }
 }

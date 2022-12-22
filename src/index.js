@@ -29,11 +29,16 @@ const cards = [
   { name: "thor", img: "thor.jpg" },
 ];
 
+const openedCards = ["ss", "rr"];
+
 const memoryGame = new MemoryGame(cards);
-console.log(memoryGame.shuffleCards());
+
+memoryGame.shuffleCards();
 
 window.addEventListener("load", (event) => {
   let html = "";
+  console.log(memoryGame.cards);
+
   memoryGame.cards.forEach((pic) => {
     html += `
       <div class="card" data-card-name="${pic.name}">
@@ -50,7 +55,40 @@ window.addEventListener("load", (event) => {
   document.querySelectorAll(".card").forEach((card) => {
     card.addEventListener("click", () => {
       // TODO: write some code here
+
       console.log(`Card clicked: ${card}`);
+
+      const cardName = card.getAttribute("data-card-name");
+      console.log(cardName);
+      const backCard = card.querySelector(".card .back");
+      const frontCard = card.querySelector(".card .front");
+
+      backCard.style.backgroundColor = "transparent";
+      frontCard.style.backfaceVisibility = "visible";
+
+      memoryGame.pickingCards(cardName);
+
+      const isPairFound = memoryGame.checkIfPair(
+        memoryGame.pickedCards[0],
+        memoryGame.pickedCards[1]
+      );
+
+      // if (!isPairFound) {
+
+      //   // setTimeout(() => {
+      //   backCard.style.backgroundColor = "#456783";
+      //   frontCard.style.backfaceVisibility = "hidden";
+      //   // }, 2000);
+      // }
+
+      console.log({ result: isPairFound });
+
+      console.log({ memoryGame });
+
+      // console.log(card);
+      // getting name of the card frim the node
+      // updating the class with the card clciked
+      //
     });
   });
 });
