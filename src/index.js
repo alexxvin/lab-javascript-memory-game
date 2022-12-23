@@ -29,7 +29,7 @@ const cards = [
   { name: "thor", img: "thor.jpg" },
 ];
 
-const openedCards = ["ss", "rr"];
+// const openedCards = [];
 
 const memoryGame = new MemoryGame(cards);
 
@@ -37,7 +37,6 @@ memoryGame.shuffleCards();
 
 window.addEventListener("load", (event) => {
   let html = "";
-  console.log(memoryGame.cards);
 
   memoryGame.cards.forEach((pic) => {
     html += `
@@ -48,47 +47,59 @@ window.addEventListener("load", (event) => {
     `;
   });
 
+  function setAsVisible(card) {
+    card.classList.remove("opened");
+    card.classList.add("found");
+    const backCard = card.querySelector(".back");
+    const frontCard = card.querySelector(".front");
+    backCard.style.backgroundColor = "transparent";
+    frontCard.style.backfaceVisibility = "visible";
+  }
+
+  function setAsHidden(card) {
+    card.classList.remove("opened");
+    const backCard = card.querySelector(".back");
+    const frontCard = card.querySelector(".front");
+    backCard.style.backgroundColor = "#456783";
+    frontCard.style.backfaceVisibility = "hidden";
+  }
+
   // Add all the divs to the HTML
   document.querySelector("#memory-board").innerHTML = html;
 
   // Bind the click event of each element to a function
   document.querySelectorAll(".card").forEach((card) => {
     card.addEventListener("click", () => {
-      // TODO: write some code here
-
-      console.log(`Card clicked: ${card}`);
-
+      // console.log(memoryGame);
+      document.querySelector("#pairs-clicked").innerText =
+        memoryGame.pairsClicked;
+      document.querySelector("#pairs-guessed").innerText =
+        memoryGame.pairsGuessed;
       const cardName = card.getAttribute("data-card-name");
-      console.log(cardName);
       const backCard = card.querySelector(".card .back");
       const frontCard = card.querySelector(".card .front");
 
+      card.classList.add("opened");
       backCard.style.backgroundColor = "transparent";
       frontCard.style.backfaceVisibility = "visible";
 
       memoryGame.pickingCards(cardName);
 
-      const isPairFound = memoryGame.checkIfPair(
-        memoryGame.pickedCards[0],
-        memoryGame.pickedCards[1]
-      );
-
-      // if (!isPairFound) {
-
-      //   // setTimeout(() => {
-      //   backCard.style.backgroundColor = "#456783";
-      //   frontCard.style.backfaceVisibility = "hidden";
-      //   // }, 2000);
-      // }
-
-      console.log({ result: isPairFound });
-
-      console.log({ memoryGame });
-
-      // console.log(card);
-      // getting name of the card frim the node
-      // updating the class with the card clciked
-      //
+      if (memoryGame.pickedCards.length === 2) {
+        const openedCards = document.querySelectorAll(".opened");
+        if (!memoryGame.checkIfPair()) {
+          setTimeout(() => {
+            openedCards.forEach((card) => {
+              setAsHidden(card);
+            });
+          }, 1000);
+        } else {
+          openedCards.forEach((card) => {
+            setAsVisible(card);
+          });
+        }
+        memoryGame.resetPickingCards();
+      }
     });
   });
 });

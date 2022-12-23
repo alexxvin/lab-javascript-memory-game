@@ -35,9 +35,9 @@ class MemoryGame {
     return this.cards;
   }
 
-  checkIfPair(card1, card2) {
+  checkIfPair() {
     this.pairsClicked++;
-    if (card1 === card2) {
+    if (this.pickedCards[0] === this.pickedCards[1]) {
       this.pairsGuessed++;
       return true;
     }
@@ -71,20 +71,10 @@ class MemoryGame {
   }
 
   pickingCards(pickedCard) {
-    // [a, b].length === 2
-    if (this.pickedCards.length == 2) {
-      this.pickedCards = [];
-    }
-
     this.pickedCards.push(pickedCard);
+  }
 
-    // const updatedArray = this.cards.map((card) => {
-    //   if (card.name === pickedCard) {
-    //     card["isOpen"] = true;
-    //   }
-    //   return card;
-    // });
-
-    // this.cards = updatedArray;
+  resetPickingCards() {
+    this.pickedCards = [];
   }
 }
